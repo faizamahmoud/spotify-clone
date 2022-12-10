@@ -14,3 +14,10 @@ class Home(View):
 class About(View):
     def get(self, request):
         return HttpResponse("Spotify About")
+    
+
+class Home(TemplateView):
+    template_name = "home.html"
+    
+class About(TemplateView):
+    template_name = "about.html"
