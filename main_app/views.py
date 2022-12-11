@@ -47,18 +47,19 @@ artists = [
           "https://i1.sndcdn.com/artworks-sNjd3toBZYCG-0-t500x500.jpg", "Ryan Gary Raddon, better known by his stage name Kaskade, is an American DJ, record producer, and remixer."),
 ]
 
-# class ArtistList(TemplateView):
-#     template_name = "artist_list.html"
-
-#     def get_context_data(self, **tuple):
-#         context = super().get_context_data(**tuple)
-#         context["artists"] = artists # this is where we add the key into our context object for the view to use
-#         return context
-
 class ArtistList(TemplateView):
     template_name = "artist_list.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["artists"] = Artist.objects.all() # Here we are using the model to query the database for us.
+    def get_context_data(self, **tuple):
+        context = super().get_context_data(**tuple)
+        context["artists"] = artists # this is where we add the key into our context object for the view to use
         return context
+
+#!come back to load data into db
+# class ArtistList(TemplateView):
+#     template_name = "artist_list.html"
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["artists"] = Artist.objects.all() # Here we are using the model to query the database for us.
+#         return context
