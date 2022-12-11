@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.views import View # <- View class to handle requests
 from django.http import HttpResponse # <- a class to handle sending a type of response
 from django.views.generic.base import TemplateView
-
+# import models
+from .models import Artist
 # GET request
 class Home(View):
     def get(self, request):
@@ -25,9 +26,9 @@ class About(TemplateView):
     
  #adds artist class for mock database data
 class Artist:
-    def __init__(self, name, image, bio):
+    def __init__(self, name, img, bio):
         self.name = name
-        self.image = image
+        self.img = img
         self.bio = bio
 
 
@@ -46,19 +47,18 @@ artists = [
           "https://i1.sndcdn.com/artworks-sNjd3toBZYCG-0-t500x500.jpg", "Ryan Gary Raddon, better known by his stage name Kaskade, is an American DJ, record producer, and remixer."),
 ]
 
+# class ArtistList(TemplateView):
+#     template_name = "artist_list.html"
+
+#     def get_context_data(self, **tuple):
+#         context = super().get_context_data(**tuple)
+#         context["artists"] = artists # this is where we add the key into our context object for the view to use
+#         return context
+
 class ArtistList(TemplateView):
     template_name = "artist_list.html"
 
-    def get_context_data(self, **tuple):
-        context = super().get_context_data(**tuple)
-        context["artists"] = artists # this is where we add the key into our context object for the view to use
-        return context
-
-
-class SongList(TemplateView):
-    template_name = "song_list.html"
-    
-    def get_context_data(self, **tuple):
-        context = super().get_context_data(**tuple)
-        context['songs'] = songs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["artists"] = Artist.objects.all() # Here we are using the model to query the database for us.
         return context
