@@ -47,13 +47,24 @@ artists = [
           "https://i1.sndcdn.com/artworks-sNjd3toBZYCG-0-t500x500.jpg", "Ryan Gary Raddon, better known by his stage name Kaskade, is an American DJ, record producer, and remixer."),
 ]
 
+
 class ArtistList(TemplateView):
     template_name = "artist_list.html"
 
-    def get_context_data(self, **tuple):
-        context = super().get_context_data(**tuple)
-        context["artists"] = artists # this is where we add the key into our context object for the view to use
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # to get the query parameter we have to acccess it in the request.GET dictionary object        
+        name = self.request.GET.get("name")
+        # If a query exists we will filter by name 
+        if name != None:
+            # .filter is the sql WHERE statement and name__icontains is doing a search for any name that contains the query param
+            context["artists"] = Artist.objects.filter(name__icontains=name)
+        else:
+            context["artists"] = Artist.objects.all()
         return context
+
+
+
 
 #!come back to load data into db
 # class ArtistList(TemplateView):
