@@ -4,8 +4,10 @@ from django.shortcuts import render
 from django.views import View # <- View class to handle requests
 from django.http import HttpResponse # <- a class to handle sending a type of response
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
 # import models
 from .models import Artist
+# from .models import ArtistCreate
 
 
 # GET request
@@ -43,3 +45,10 @@ class ArtistList(TemplateView):
             # default header for not searching 
             context["header"] = f"Searching for {name}"
         return context
+    
+
+class ArtistCreate(CreateView):
+    model = Artist
+    fields = ['name', 'img', 'bio', 'verified_artist']
+    template_name = "artist_create.html"
+    success_url = "/artists/"
