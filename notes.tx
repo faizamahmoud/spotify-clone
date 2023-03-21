@@ -52,3 +52,6 @@ mysite/wsgi.py: An entry-point for WSGI-compatible web servers to serve your pro
 Pipfile - similar to Package.JSON
 
 python3 manage.py runserver
+
+
+psql spotify -c "SELECT * FROM main_app_artist"
