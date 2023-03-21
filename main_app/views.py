@@ -25,12 +25,21 @@ class Home(TemplateView):
 class About(TemplateView):
     template_name = "about.html"
     
-    
 
 class ArtistList(TemplateView):
     template_name = "artist_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) #method passes data to template
-        context["artists"] = Artist.objects.all() # Here we are using the model to query the database for us.
+         # to get the query parameter we have to acccess it in the request.GET dictionary object        
+        name = self.request.GET.get("name")
+        # If a query exists we will filter by name 
+        if name != None:
+            context["artists"] = Artist.objects.filter(name__icontains=name)
+            # We add a header context that includes the search param
+            context["header"] = f"Searching for {name}"
+        else:
+            context["artists"] = Artist.objects.all()
+            # default header for not searching 
+            context["header"] = f"Searching for {name}"
         return context
