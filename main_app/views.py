@@ -5,9 +5,8 @@ from django.views import View # <- View class to handle requests
 from django.shortcuts import render
 from django.http import HttpResponse # <- a class to handle sending a type of response
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView
 from django.views.generic import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 # import models
 from .models import Artist
 # from .models import ArtistCreate
@@ -90,3 +89,9 @@ class ArtistUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse('artist_detail', kwargs={'pk': self.object.pk})
+    
+    
+class ArtistDelete(DeleteView):
+    model = Artist
+    template_name = "artist_delete_confirmation.html"
+    success_url = "/artists/"
