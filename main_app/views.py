@@ -1,16 +1,19 @@
 # Here we will be creating a class called Home and extending it from the View class
 
-from django.shortcuts import render
+from django.urls import reverse
 from django.views import View # <- View class to handle requests
+from django.shortcuts import render
 from django.http import HttpResponse # <- a class to handle sending a type of response
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
+from django.views.generic import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 # import models
 from .models import Artist
 # from .models import ArtistCreate
 
 
-# GET request
+# Home class, extending from the view class
 class Home(View):
     def get(self, request):
         return HttpResponse("Spotify Home") #similar to res.send()
@@ -47,8 +50,43 @@ class ArtistList(TemplateView):
         return context
     
 
+# class ArtistCreate(CreateView):
+#     model = Artist
+#     fields = ['name', 'img', 'bio', 'verified_artist']
+#     template_name = "artist_create.html"
+#     success_url = "/artists/"
+    
+    
+class ArtistDetail(DetailView):
+    model = Artist
+    template_name = "artist_detail.html"
+    
+# class ArtistUpdate(UpdateView):
+#     model = Artist
+#     fields = ['name', 'img', 'bio', 'verified_artist']
+#     template_name = "artist_update.html"
+#     success_url = "/artists/"
+# # at the top of the file import reverse 
+
+# ...
+
+
+### **Modify success redirect to go to Artist Detail page**
+
+# One bonus that would be nice, is if our redirects for create and update would go to the artist detail page. To do this we will be using a new method in our classes called get_success_url. For detailed info check out the docs.
 class ArtistCreate(CreateView):
     model = Artist
     fields = ['name', 'img', 'bio', 'verified_artist']
     template_name = "artist_create.html"
-    success_url = "/artists/"
+    # this will get the pk from the route and redirect to artist view
+    def get_success_url(self):
+        return reverse('artist_detail', kwargs={'pk': self.object.pk})
+        
+        
+class ArtistUpdate(UpdateView):
+    model = Artist
+    fields = ['name', 'img', 'bio', 'verified_artist']
+    template_name = "artist_update.html"
+
+    def get_success_url(self):
+        return reverse('artist_detail', kwargs={'pk': self.object.pk})

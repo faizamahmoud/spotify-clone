@@ -23,18 +23,20 @@
 </form>
 <div class="gallery">
   {% for artist in artists %}
-  <a href="">
-    <div class="card">
-      <div class="card-image">
-        <figure class="image is-square">
-          <img src="{{artist.img}}" alt="{{artist.name}}" />
-        </figure>
+  <!-- Here we are changing the href of the a tag to use the url DTL -->
+    <a href="{% url 'artist_detail' artist.pk %}">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-square">
+            <img src="{{artist.img}}" alt="{{artist.name}}" />
+          </figure>
+        </div>
+        <div class="card-header">
+          <p class="card-header-title">{{artist.name}}</p>
+        </div>
       </div>
-      <div class="card-header">
-        <p class="card-header-title">{{artist.name}}</p>
-      </div>
-    </div>
-  </a>
+    </a>
+    
   {% endfor %}
 </div>
 

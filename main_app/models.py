@@ -14,4 +14,3 @@ class Artist(models.Model):
     class Meta:
         ordering = ['name']
 
-
